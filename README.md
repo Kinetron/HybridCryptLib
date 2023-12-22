@@ -1,0 +1,2 @@
+# HybridCryptLib
+.Net7
