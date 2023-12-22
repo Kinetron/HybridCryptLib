@@ -214,11 +214,29 @@ namespace HybridCryptLib.Services
 		public byte[] EncryptAes(byte[] data, byte[] key, byte[] iv)
 		{
 			BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(new CbcBlockCipher(new AesFastEngine()));
-			byte[] keyIV = new byte[key.Length / 2];
-			Array.Copy(key, keyIV, key.Length / 2);
-
-			ParametersWithIV piv = new ParametersWithIV((new KeyParameter(key)), keyIV);
+			ParametersWithIV piv = new ParametersWithIV((new KeyParameter(key)), iv);
 			cipher.Init(true, piv);
+			byte[] result = new byte[cipher.GetOutputSize(data.Length)];
+			int len = cipher.ProcessBytes(data, 0, data.Length, result, 0);
+			try
+			{
+				cipher.DoFinal(result, len);
+			}
+			catch (Exception ex)
+			{
+				LastError = ex.Message;
+				return null;
+			}
+
+			return result;
+		}
+
+		public byte[] DecryptAes(byte[] data, byte[] key, byte[] iv)
+		{
+			BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(new CbcBlockCipher(new AesFastEngine()));
+
+			ParametersWithIV piv = new ParametersWithIV((new KeyParameter(key)), iv);
+			cipher.Init(false, piv);
 			byte[] result = new byte[cipher.GetOutputSize(data.Length)];
 			int len = cipher.ProcessBytes(data, 0, data.Length, result, 0);
 			try
