@@ -21,4 +21,10 @@
     <ProjectReference Include="..\HybridCryptLib\HybridCryptLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestData\pem_key">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

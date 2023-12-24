@@ -183,13 +183,17 @@ namespace HybridCryptLib.Services
 		}
 
 		/// <summary>
-		/// Шифрует строку алгоритмом RSA используя закрытый ключ.
+		/// Шифрует сообщение алгоритмом RSA используя закрытый ключ.
+		/// Фактически это усеченный алгоритм подписи(без хеш). Расшифровать можно 
+		/// открытым ключем. Как и проверка подписи.  Подписывать нельзя так как длина
+		/// сообщения будет равна длине текста.
+		/// Для нормального шифрования используется открытый ключ получателя.
 		/// </summary>
 		/// <param name="pathPrivateKey"></param>
 		/// <param name="data"></param>
 		/// <param name="password"></param>
 		/// <returns></returns>
-		public string EncryptRsa(string pathPrivateKey, string data, string password)
+		public byte[] EncryptRsaUsePrivateKey(string pathPrivateKey, byte[] data, string password)
 		{
 			if (!File.Exists(pathPrivateKey))
 			{
@@ -201,8 +205,7 @@ namespace HybridCryptLib.Services
 				var encryptEngine = new Pkcs1Encoding(new RsaEngine());
 				var keyPair = (AsymmetricCipherKeyPair)LoadPem(pathPrivateKey, password);
 				encryptEngine.Init(true, keyPair.Private);
-				byte[] result = encryptEngine.ProcessBlock(Encoding.ASCII.GetBytes(data), 0, data.Length);
-				return BitConverter.ToString(result).Replace("-", "").ToLower();
+				return encryptEngine.ProcessBlock(data, 0, data.Length);
 			}
 			catch (Exception ex)
 			{
@@ -211,6 +214,35 @@ namespace HybridCryptLib.Services
 			}
 		}
 
+		public byte[] DecryptRsaUsePublicKey(byte[] data, AsymmetricKeyParameter publicKey)
+		{
+			var decryptEngine = new Pkcs1Encoding(new RsaEngine());
+			decryptEngine.Init(false, publicKey);
+			return decryptEngine.ProcessBlock(data, 0, data.Length);
+		}
+
+		public byte[] EncryptRsaUsePublicKey(byte[] data, AsymmetricKeyParameter publicKey)
+		{
+			var encryptEngine = new Pkcs1Encoding(new RsaEngine());
+			encryptEngine.Init(true, publicKey);
+
+			return encryptEngine.ProcessBlock(data, 0, data.Length);
+		}
+
+		public byte[] DecryptRsaUsePrivateKey(byte[] data, AsymmetricKeyParameter privateKey)
+		{
+			var decryptEngine = new Pkcs1Encoding(new RsaEngine());
+			decryptEngine.Init(false, privateKey);
+			return decryptEngine.ProcessBlock(data, 0, data.Length);
+		}
+
+		/// <summary>
+		/// Шифрует алгоритмом AES.
+		/// </summary>
+		/// <param name="data"></param>
+		/// <param name="key"></param>
+		/// <param name="iv"></param>
+		/// <returns></returns>
 		public byte[] EncryptAes(byte[] data, byte[] key, byte[] iv)
 		{
 			BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(new CbcBlockCipher(new AesFastEngine()));
@@ -231,6 +263,13 @@ namespace HybridCryptLib.Services
 			return result;
 		}
 
+		/// <summary>
+		/// Дешифрует алгоритмом AES.
+		/// </summary>
+		/// <param name="data"></param>
+		/// <param name="key"></param>
+		/// <param name="iv"></param>
+		/// <returns></returns>
 		public byte[] DecryptAes(byte[] data, byte[] key, byte[] iv)
 		{
 			BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(new CbcBlockCipher(new AesFastEngine()));

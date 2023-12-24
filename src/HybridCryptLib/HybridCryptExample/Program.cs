@@ -11,15 +11,10 @@ namespace HybridCryptExample
 
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello, World!");
+			Console.WriteLine("Hello, test!");
 
 			СommonCrypt сommonCrypt = new СommonCrypt();
-			if (!сommonCrypt.CheckKeyPassword(_privateKeyPath, _privateKeyPassword))
-			{
-				Console.WriteLine(сommonCrypt.LastError);
-				return;
-			}
-			
+
 			AsymmetricCipherKeyPair pair = (AsymmetricCipherKeyPair)сommonCrypt.LoadPem($"private_key", _privateKeyPassword);
 			//X509Certificate cert = (X509Certificate)сommonCrypt.LoadPem($"private_key", _privateKeyPassword);
 
@@ -36,18 +31,7 @@ namespace HybridCryptExample
 			byte[] iv = сommonCrypt.GenerateRandom(32);
 
 			string aesStrKey = Convert.ToBase64String(aesKey);
-
-			string encryptData = сommonCrypt.EncryptRsa("private_key", "123", _privateKeyPassword);
-			if(encryptData == null)
-			{
-				Console.WriteLine(сommonCrypt.LastError);
-				return;
-			}
-
-			string test = "fdhjsklahffn,smnfsdlfsadjf;lklk;";
-			сommonCrypt.EncryptAes(Encoding.UTF8.GetBytes(test), aesKey, iv);
-
-			//Encoding.UTF8.GetBytes(str)
+			//		return BitConverter.ToString(result).Replace("-", "").ToLower();
 		}
 	}
 }
