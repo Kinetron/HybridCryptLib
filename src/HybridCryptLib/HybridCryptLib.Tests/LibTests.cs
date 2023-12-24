@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Org.BouncyCastle.X509;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Security.Cryptography.X509Certificates;
+using HybridCryptLib.Models;
+using Newtonsoft.Json;
 
 namespace HybridCryptLib.Tests
 {
@@ -78,10 +80,7 @@ namespace HybridCryptLib.Tests
 			//Расшифровываем открытым.
 			byte[] decryptData = сommonCrypt.DecryptRsaUsePublicKey(cryptData, pair.Public);
 
-			for (int i = 0; i < decryptData.Length; i++)
-			{
-				Assert.AreEqual(text[i], decryptData[i]);
-			}
+			Assert.IsTrue(text.SequenceEqual(decryptData));
 		}
 
 		/// <summary>
@@ -103,6 +102,22 @@ namespace HybridCryptLib.Tests
 
 			string decryptStr = Encoding.UTF8.GetString(decryptText);
 			Assert.AreEqual(text, decryptStr);
+		}
+
+		/// <summary>
+		/// Тест кодирования декодирования пользовательских данных.
+		/// </summary>
+		[Test]
+		public void ProtectData()
+		{
+			ProtectedInfo protectedInfo = new ProtectedInfo()
+			{
+				Name = "Дудкин Иван Басович",
+				Phone = "+12345678988",
+				Email = "somemail@mail"
+			};
+
+			string json = JsonConvert.SerializeObject(protectedInfo);
 		}
 	}
 }

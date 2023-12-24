@@ -12,7 +12,7 @@ namespace HybridCryptLib.ShortAsn
 	/// Содержит основной функционал для работы с бинарными блоками похожими на формат Asn1.
 	/// Формат немного упрощен, и использует свои типы блоков.
 	/// </summary>
-	internal class BlockManager
+	public class BlockManager
 	{
 		/// <summary>
 		/// Длина типа блока. Байт.
@@ -112,28 +112,26 @@ namespace HybridCryptLib.ShortAsn
 		/// <summary>
 		/// Читает данные ассиметричной системы.
 		/// </summary>
-		public void ReadData(FileStream inFile, ulong dataLen)
+		public void ReadData(byte[] srcData)
 		{
-			//Устанавливаю текущую позицию на начало блока данных.
-			inFile.Position = (long)dataLen;
-
 			byte[] title = new byte[BlockHeadSize]; //Заголовок 5 байт [тип][длина] 
 
-			int blockLen = 0; //Длина блока данных.
-
-			//Файл может содержать произвольное количество блоков данных.
-			while (inFile.Position < inFile.Length)
+			using (MemoryStream stream = new MemoryStream(srcData))
 			{
-				inFile.Read(title, 0, BlockHeadSize);
+				//Может содержать произвольное количество блоков данных.
+				while (stream.Position < srcData.Length)
+				{
+					stream.Read(title, 0, BlockHeadSize);
 
-				//Читаю блок данных.
-				blockLen = DecodeBlockDataLen(title);
-				AsnBlock block = new AsnBlock();
-				block.Type = (BlockTypesEnum)title[BlockTypeBeginPos];
-				block.Data = new byte[blockLen];
+					//Читаю блок данных.
+					int blockLen = DecodeBlockDataLen(title); //Длина блока данных.
+					AsnBlock block = new AsnBlock();
+					block.Type = (BlockTypesEnum)title[BlockTypeBeginPos];
+					block.Data = new byte[blockLen];
 
-				inFile.Read(block.Data, 0, blockLen);
-				Blocks.Add(block);
+					stream.Read(block.Data, 0, blockLen);
+					Blocks.Add(block);
+				}
 			}
 		}
 

@@ -10,7 +10,7 @@ namespace HybridCryptLib.ShortAsn.Enums
     /// <summary>
     /// Типы бинарных блоков.
     /// </summary>
-    internal enum BlockTypesEnum
+    public enum BlockTypesEnum
     {
         /// <summary>
         /// Блок содержащий кодированные данные.

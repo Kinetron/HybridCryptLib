@@ -5,7 +5,7 @@ namespace HybridCryptLib.ShortAsn.Models
 	/// <summary>
 	/// Бинарный блок.
 	/// </summary>
-	internal class AsnBlock
+	public class AsnBlock
 	{
 		/// <summary>
 		/// Тип блока.
