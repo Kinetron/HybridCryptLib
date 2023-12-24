@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Защищаемая информация, которая будет закодирована.
 	/// </summary>
-	public class ProtectedInfo
+	public class UserInfo
 	{
 		public string Name { get; set; }
 

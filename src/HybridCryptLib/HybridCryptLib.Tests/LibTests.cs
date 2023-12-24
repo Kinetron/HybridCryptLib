@@ -110,14 +110,13 @@ namespace HybridCryptLib.Tests
 		[Test]
 		public void ProtectData()
 		{
-			ProtectedInfo protectedInfo = new ProtectedInfo()
+			UserInfo info = new UserInfo()
 			{
 				Name = "Дудкин Иван Басович",
 				Phone = "+12345678988",
 				Email = "somemail@mail"
 			};
 
-			string json = JsonConvert.SerializeObject(protectedInfo);
 		}
 	}
 }
