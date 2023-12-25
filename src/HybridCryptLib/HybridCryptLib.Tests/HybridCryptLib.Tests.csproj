@@ -22,6 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="TestData\cert.crt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\pem_key">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

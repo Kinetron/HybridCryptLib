@@ -10,6 +10,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Security.Cryptography.X509Certificates;
 using HybridCryptLib.Models;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Crypto.Tls;
+using System.IO;
 
 namespace HybridCryptLib.Tests
 {
@@ -117,6 +119,38 @@ namespace HybridCryptLib.Tests
 				Email = "somemail@mail"
 			};
 
+			CryptUserInfo cryptUserInfo = new CryptUserInfo();
+			byte[] cryptData = cryptUserInfo.Crypt(info, "TestData\\cert.crt");
+
+			UserInfo decodeInfo = cryptUserInfo.DeCrypt(cryptData, _privateKeyPath, _privateKeyPassword);
+
+			Assert.AreEqual(info.Name, decodeInfo.Name);
+		}
+
+		/// <summary>
+		/// Создание сертификата и загрузка открытого ключа из него.
+		/// </summary>
+		[Test]
+		public void CertCreate()
+		{
+			СommonCrypt сommonCrypt = new СommonCrypt();
+			AsymmetricCipherKeyPair pair = (AsymmetricCipherKeyPair)сommonCrypt.LoadPem(_privateKeyPath, _privateKeyPassword);
+	
+			DateTime certBegin = DateTime.Now; //Дата начала действия сертификата.
+			DateTime certEnd = certBegin.AddYears(10);
+
+			string certContent = сommonCrypt.GenCert(pair,
+				"HybridCryptMain", certBegin, certEnd);
+
+			File.WriteAllText("cert.crt", certContent);
+			
+			using (var file = File.OpenRead("cert.crt"))
+			{
+				X509CertificateParser parser = new X509CertificateParser();
+				var certificate = parser.ReadCertificate(file);
+				AsymmetricKeyParameter pubKey =  certificate.GetPublicKey();
+                Assert.IsNotNull(pubKey);  				
+			}
 		}
 	}
 }
