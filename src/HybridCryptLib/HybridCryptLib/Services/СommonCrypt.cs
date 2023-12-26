@@ -74,7 +74,15 @@ namespace HybridCryptLib.Services
 			return pemReaderPrivateKey.ReadObject();
 		}
 
-		public string GenCert(AsymmetricCipherKeyPair pair,
+		/// <summary>
+		/// Создает само подписной сертификат CA.
+		/// </summary>
+		/// <param name="pair"></param>
+		/// <param name="issuer"></param>
+		/// <param name="dateBegin"></param>
+		/// <param name="dateEnd"></param>
+		/// <returns></returns>
+		public string GenRootCert(AsymmetricCipherKeyPair pair,
 			string issuer, DateTime dateBegin, DateTime dateEnd)
 		{
 			if (string.IsNullOrEmpty(issuer))
@@ -113,6 +121,16 @@ namespace HybridCryptLib.Services
 			}
 		}
 
+		/// <summary>
+		/// Создает само подписной сертификат CA.
+		/// </summary>
+		/// <param name="secretKey"></param>
+		/// <param name="publicKey"></param>
+		/// <param name="password"></param>
+		/// <param name="issuer"></param>
+		/// <param name="dateBegin"></param>
+		/// <param name="dateEnd"></param>
+		/// <returns></returns>
 		public string GenCert(string secretKey, AsymmetricKeyParameter publicKey, string password,
 			string issuer, DateTime dateBegin, DateTime dateEnd)
 		{

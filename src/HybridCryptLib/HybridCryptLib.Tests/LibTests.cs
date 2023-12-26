@@ -139,7 +139,7 @@ namespace HybridCryptLib.Tests
 			DateTime certBegin = DateTime.Now; //Дата начала действия сертификата.
 			DateTime certEnd = certBegin.AddYears(10);
 
-			string certContent = сommonCrypt.GenCert(pair,
+			string certContent = сommonCrypt.GenRootCert(pair,
 				"HybridCryptMain", certBegin, certEnd);
 
 			File.WriteAllText("cert.crt", certContent);

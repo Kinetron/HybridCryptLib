@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HybridCryptLib", "HybridCry
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HybridCryptLib.Tests", "HybridCryptLib.Tests\HybridCryptLib.Tests.csproj", "{57A418D8-FCBA-4871-BBEC-5EA32D4D2659}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{1DACDE14-5070-41FD-8495-15478BDBD9A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{57A418D8-FCBA-4871-BBEC-5EA32D4D2659}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57A418D8-FCBA-4871-BBEC-5EA32D4D2659}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57A418D8-FCBA-4871-BBEC-5EA32D4D2659}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DACDE14-5070-41FD-8495-15478BDBD9A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DACDE14-5070-41FD-8495-15478BDBD9A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DACDE14-5070-41FD-8495-15478BDBD9A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DACDE14-5070-41FD-8495-15478BDBD9A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
